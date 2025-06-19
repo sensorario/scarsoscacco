@@ -52,9 +52,20 @@ export default function App() {
         <Chessboard position={fen} onPieceDrop={onDrop} boardWidth={500} />
       </div>
       <div className="moves">
-        {history.map((move) => (
-          <div key={move.id}>{move}</div>
-        ))}
+        {history
+          .reduce((pairs, move, index) => {
+            if (index % 2 === 0) {
+              pairs.push([move]);
+            } else {
+              pairs[pairs.length - 1].push(move);
+            }
+            return pairs;
+          }, [])
+          .map((pair, index) => (
+            <div key={`move-${index + 1}`}>
+              {`${index + 1}. ${pair[0]}${pair[1] ? ` ${pair[1]}` : ""}`}
+            </div>
+          ))}
       </div>
     </div>
   );
