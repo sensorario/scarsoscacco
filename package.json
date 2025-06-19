@@ -34,6 +34,7 @@
     "dist": "npm run build && electron-builder"
   },
   "dependencies": {
+    "chess.js": "^1.4.0",
     "chessground": "^9.2.1",
     "react": "^19.1.0",
     "react-chessboard": "^4.7.3",

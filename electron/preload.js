@@ -1,5 +1,7 @@
-// electron/preload.js
-window.addEventListener('DOMContentLoaded', () => {
-  console.log('Electron preload loaded');
+const { contextBridge, ipcRenderer } = require("electron");
+
+contextBridge.exposeInMainWorld("chessApi", {
+  makeMove: (move) => ipcRenderer.invoke("make-move", move),
+  getFen: () => ipcRenderer.invoke("get-fen"),
 });
 
