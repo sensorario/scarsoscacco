@@ -45,6 +45,7 @@ export default function App() {
         marginTop: 30,
         display: "flex",
         flexDirection: "row",
+        gap: 30,
       }}
     >
       <div className="board">
