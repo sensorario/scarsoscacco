@@ -31,9 +31,8 @@ export default function App() {
   };
 
   return (
-    <div style={{ display: "flex", justifyContent: "center", marginTop: 30 }}>
+    <div style={{ marginLeft: 30, marginTop: 30 }}>
       <Chessboard position={fen} onPieceDrop={onDrop} boardWidth={500} />
     </div>
   );
 }
-
