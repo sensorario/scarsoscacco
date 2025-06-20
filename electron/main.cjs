@@ -70,11 +70,20 @@ ipcMain.handle("get-best-move", (_, fen) => {
 });
 
 function createWindow() {
+  // Percorso corretto per preload in dev e production
+  const preloadPath = app.isPackaged
+    ? path.join(__dirname, "preload.js")
+    : path.join(__dirname, "preload.js");
+
+  console.log("Preload path:", preloadPath);
+  console.log("App is packaged:", app.isPackaged);
+  console.log("__dirname:", __dirname);
+
   const win = new BrowserWindow({
     width: 1024,
     height: 700,
     webPreferences: {
-      preload: path.join(__dirname, "preload.js"),
+      preload: preloadPath,
       contextIsolation: true,
       nodeIntegration: false,
     },

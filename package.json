@@ -2,6 +2,8 @@
   "name": "chess-electron-react",
   "private": true,
   "version": "1.0.0",
+  "description": "A modern chess application with integrated Stockfish AI engine built with Electron and React",
+  "author": "Scarso Scacco Team",
   "type": "module",
   "main": "electron/main.cjs",
   "build": {
