@@ -6,8 +6,6 @@ A modern chess application built with **Electron** and **React**, featuring inte
 
 *Main interface showing the chessboard, move history, and control buttons with LinkedIn-inspired design*
 
-> 📝 **Note:** Add your `example.png` screenshot to the `docs/` folder. See [docs/README_IMAGES.md](docs/README_IMAGES.md) for guidelines.
-
 ## 🚀 Features
 
 - ✅ **Interactive Chess Board** - Drag and drop pieces with validation
