@@ -22,21 +22,60 @@ export default function App() {
 
   // Gestore del movimento dei pezzi
   const onDrop = async (from, to) => {
-    const response = await window.api.chessApi.makeMove({
+    // Mossa del giocatore
+    const playerMove = await window.api.chessApi.makeMove({
       from,
       to,
       promotion: "q",
     });
 
-    if (response.error) {
-      console.warn("Mossa illegale:", response.error);
+    if (playerMove.error) {
+      console.warn("Mossa illegale:", playerMove.error);
       return false;
     }
 
-    setFen(response.fen);
+    setFen(playerMove.fen);
     setHistory(await window.api.chessApi.getHistory());
 
+    // Mossa automatica di Stockfish
+    try {
+      const bestMove = await window.api.stockfish.getBestMove(playerMove.fen);
+
+      const aiMove = await window.api.chessApi.makeMove({
+        from: bestMove.substring(0, 2),
+        to: bestMove.substring(2, 4),
+        promotion: "q",
+      });
+
+      if (!aiMove.error) {
+        setFen(aiMove.fen);
+        setHistory(await window.api.chessApi.getHistory());
+      }
+    } catch (error) {
+      console.error("Errore Stockfish:", error);
+    }
+
     return true;
+  };
+
+  // Funzione per mossa manuale di Stockfish
+  const handleStockfishMove = async () => {
+    try {
+      const bestMove = await window.api.stockfish.getBestMove(fen);
+
+      const response = await window.api.chessApi.makeMove({
+        from: bestMove.substring(0, 2),
+        to: bestMove.substring(2, 4),
+        promotion: "q",
+      });
+
+      if (!response.error) {
+        setFen(response.fen);
+        setHistory(await window.api.chessApi.getHistory());
+      }
+    } catch (error) {
+      console.error("Errore Stockfish:", error);
+    }
   };
 
   return (
@@ -92,6 +131,8 @@ export default function App() {
           >
             Reset
           </button>
+
+          <button onClick={handleStockfishMove}>Mossa Stockfish</button>
         </div>
       </div>
     </div>

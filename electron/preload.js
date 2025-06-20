@@ -1,6 +1,9 @@
 const { contextBridge, ipcRenderer } = require("electron");
 
 contextBridge.exposeInMainWorld("api", {
+  stockfish: {
+    getBestMove: (fen) => ipcRenderer.invoke("get-best-move", fen),
+  },
   chessApi: {
     makeMove: (move) => ipcRenderer.invoke("make-move", move),
     getFen: () => ipcRenderer.invoke("get-fen"),

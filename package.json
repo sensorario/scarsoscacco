@@ -9,10 +9,12 @@
     "productName": "Scarso Scacco",
     "files": [
       "dist",
-      "electron"
+      "electron",
+      "assets"
     ],
     "asarUnpack": [
-      "electron/**/*"
+      "electron/**/*",
+      "assets/**/*"
     ],
     "directories": {
       "buildResources": "assets"
@@ -42,7 +44,7 @@
     "react": "^19.1.0",
     "react-chessboard": "^4.7.3",
     "react-dom": "^19.1.0",
-    "stockfish": "^16.0.0"
+    "stockfish.wasm": "^0.10.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.25.0",
