@@ -9,5 +9,6 @@ contextBridge.exposeInMainWorld("api", {
     getFen: () => ipcRenderer.invoke("get-fen"),
     getHistory: () => ipcRenderer.invoke("get-history"),
     resetGame: () => ipcRenderer.invoke("reset-game"),
+    getVersion: () => ipcRenderer.invoke("get-version"),
   },
 });

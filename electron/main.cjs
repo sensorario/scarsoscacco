@@ -2,6 +2,7 @@ const { app, BrowserWindow, ipcMain } = require("electron");
 const path = require("path");
 const { Chess } = require("chess.js"); // chess.js v1 compatibile con require
 const StockfishFactory = require("stockfish.wasm");
+const packageJson = require("../package.json");
 
 const game = new Chess(); // stato globale della partita
 let stockfishEngine = null;
@@ -23,6 +24,10 @@ ipcMain.handle("get-history", () => {
 ipcMain.handle("reset-game", () => {
   game.reset();
   return { fen: game.fen() };
+});
+
+ipcMain.handle("get-version", () => {
+  return packageJson.version;
 });
 
 // Inizializza Stockfish
@@ -66,8 +71,8 @@ ipcMain.handle("get-best-move", (_, fen) => {
 
 function createWindow() {
   const win = new BrowserWindow({
-    width: 900,
-    height: 600,
+    width: 1024,
+    height: 700,
     webPreferences: {
       preload: path.join(__dirname, "preload.js"),
       contextIsolation: true,

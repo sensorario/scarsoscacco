@@ -1,7 +1,7 @@
 {
   "name": "chess-electron-react",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
   "type": "module",
   "main": "electron/main.cjs",
   "build": {
@@ -9,12 +9,10 @@
     "productName": "Scarso Scacco",
     "files": [
       "dist",
-      "electron",
-      "assets"
+      "electron"
     ],
     "asarUnpack": [
-      "electron/**/*",
-      "assets/**/*"
+      "electron/**/*"
     ],
     "directories": {
       "buildResources": "assets"
@@ -23,7 +21,22 @@
       "target": "dmg"
     },
     "win": {
-      "target": "nsis"
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64",
+            "ia32"
+          ]
+        },
+        {
+          "target": "portable",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "requestedExecutionLevel": "asInvoker"
     },
     "linux": {
       "target": "AppImage"
@@ -36,7 +49,10 @@
     "preview": "vite preview",
     "main": "electron/main.js",
     "electron": "electron .",
-    "dist": "npm run build && electron-builder"
+    "dist": "npm run build && electron-builder",
+    "dist:win": "npm run build && electron-builder --win",
+    "dist:mac": "npm run build && electron-builder --mac",
+    "dist:linux": "npm run build && electron-builder --linux"
   },
   "dependencies": {
     "chess.js": "^1.4.0",
