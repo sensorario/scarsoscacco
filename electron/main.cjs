@@ -1,7 +1,7 @@
 const { app, BrowserWindow, ipcMain } = require("electron");
 const path = require("path");
 const { Chess } = require("chess.js"); // chess.js v1 compatibile con require
-const Stockfish = require("stockfish.wasm");
+const StockfishFactory = require("stockfish.wasm");
 
 const game = new Chess(); // stato globale della partita
 let stockfishEngine = null;
@@ -28,7 +28,7 @@ ipcMain.handle("reset-game", () => {
 // Inizializza Stockfish
 async function initStockfish() {
   try {
-    stockfishEngine = await Stockfish();
+    stockfishEngine = await StockfishFactory();
     stockfishEngine.postMessage("uci");
     stockfishEngine.postMessage("ucinewgame");
     console.log("Stockfish WASM inizializzato");
@@ -46,19 +46,19 @@ ipcMain.handle("get-best-move", (_, fen) => {
 
     const onMessage = (line) => {
       if (typeof line === "string" && line.includes("bestmove")) {
-        stockfishEngine.removeEventListener("message", onMessage);
+        stockfishEngine.removeMessageListener(onMessage);
         const move = line.split("bestmove ")[1].split(" ")[0];
         resolve(move);
       }
     };
 
-    stockfishEngine.addEventListener("message", onMessage);
+    stockfishEngine.addMessageListener(onMessage);
     stockfishEngine.postMessage(`position fen ${fen}`);
     stockfishEngine.postMessage("go depth 10");
 
     // Timeout dopo 5 secondi
     setTimeout(() => {
-      stockfishEngine.removeEventListener("message", onMessage);
+      stockfishEngine.removeMessageListener(onMessage);
       reject(new Error("Timeout"));
     }, 5000);
   });
