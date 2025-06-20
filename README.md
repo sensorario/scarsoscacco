@@ -33,8 +33,8 @@ For Windows builds on macOS/Linux, Wine will be automatically downloaded.
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/your-username/chess-electron-react.git
-cd chess-electron-react
+git clone https://github.com/sensorario/scarsoscacco.git
+cd scarsoscacco
 ```
 
 ### 2. Install Dependencies
