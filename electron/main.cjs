@@ -66,7 +66,7 @@ ipcMain.handle("get-best-move", (_, fen) => {
 
 function createWindow() {
   const win = new BrowserWindow({
-    width: 800,
+    width: 900,
     height: 600,
     webPreferences: {
       preload: path.join(__dirname, "preload.js"),
