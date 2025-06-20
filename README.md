@@ -2,6 +2,12 @@
 
 A modern chess application built with **Electron** and **React**, featuring integrated **Stockfish AI** engine for intelligent gameplay.
 
+![Scarso Scacco Interface](docs/example.png)
+
+*Main interface showing the chessboard, move history, and control buttons with LinkedIn-inspired design*
+
+> 📝 **Note:** Add your `example.png` screenshot to the `docs/` folder. See [docs/README_IMAGES.md](docs/README_IMAGES.md) for guidelines.
+
 ## 🚀 Features
 
 - ✅ **Interactive Chess Board** - Drag and drop pieces with validation
@@ -41,7 +47,20 @@ npm install
 
 ## 🏃‍♂️ Development
 
-### Run in Development Mode
+### Quick Start (Recommended)
+
+```bash
+# Start both Vite and Electron automatically
+npm run dev:electron
+```
+
+This single command will:
+- Start the Vite dev server on `http://localhost:5173`
+- Wait for Vite to be ready
+- Automatically launch Electron with hot reload
+- Enable developer tools
+
+### Manual Start (Alternative)
 
 ```bash
 # Start Vite development server
@@ -51,10 +70,7 @@ npm run dev
 npm run electron
 ```
 
-This will:
-- Start the Vite dev server on `http://localhost:5173`
-- Open the Electron app with hot reload
-- Enable developer tools
+This allows you to start each service manually for more control.
 
 ## 🏗️ Building for Production
 
@@ -70,7 +86,7 @@ npm run dist
 # macOS only
 npm run dist:mac
 
-# Windows only  
+# Windows only
 npm run dist:win
 
 # Linux only
@@ -111,6 +127,7 @@ After building, you'll find the distributables in the `dist/` folder:
 | Script | Description |
 |--------|-------------|
 | `npm run dev` | Start Vite development server |
+| `npm run dev:electron` | Start both Vite and Electron (recommended for development) |
 | `npm run build` | Build for production |
 | `npm run electron` | Start Electron app |
 | `npm run dist` | Build distributables for all platforms |
@@ -186,44 +203,4 @@ npm install
 ```
 
 **Build fails on Windows**
-- Ensure you have the latest Node.js
-- Try running as administrator
-- Check Windows Defender/antivirus settings
-
-**Stockfish not responding**
-- Check console for errors
-- Ensure WebAssembly is supported
-- Try rebuilding the app
-
-### Debug Mode
-
-Run with developer tools enabled:
-```bash
-npm run electron
-```
-
-## 📄 License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
-
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
-## 📧 Support
-
-If you encounter any issues or have questions:
-
-1. Check the [Issues](https://github.com/your-username/chess-electron-react/issues) page
-2. Create a new issue with detailed information
-3. Include your OS, Node.js version, and error messages
-
----
-
-**Made with ♟️ by [Your Name]**
-
-Enjoy playing chess with AI! 🎯
+-

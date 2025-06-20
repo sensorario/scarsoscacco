@@ -22,3 +22,9 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Documentation temporary files
+docs/*.tmp
+docs/temp_*
+docs/screenshot_*
+*.screenshot
