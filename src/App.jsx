@@ -48,24 +48,50 @@ export default function App() {
         gap: 30,
       }}
     >
-      <div className="board">
+      <div className="left">
         <Chessboard position={fen} onPieceDrop={onDrop} boardWidth={500} />
       </div>
-      <div className="moves">
-        {history
-          .reduce((pairs, move, index) => {
-            if (index % 2 === 0) {
-              pairs.push([move]);
-            } else {
-              pairs[pairs.length - 1].push(move);
-            }
-            return pairs;
-          }, [])
-          .map((pair, index) => (
-            <div key={`move-${index + 1}`}>
-              {`${index + 1}. ${pair[0]}${pair[1] ? ` ${pair[1]}` : ""}`}
-            </div>
-          ))}
+      <div
+        className="right"
+        style={{
+          display: "flex",
+          flexDirection: "row",
+          gap: 30,
+        }}
+      >
+        <div className="moves">
+          {history
+            .reduce((pairs, move, index) => {
+              if (index % 2 === 0) {
+                pairs.push([move]);
+              } else {
+                pairs[pairs.length - 1].push(move);
+              }
+              return pairs;
+            }, [])
+            .map((pair, index) => (
+              <div key={`move-${index + 1}`}>
+                {`${index + 1}. ${pair[0]}${pair[1] ? ` ${pair[1]}` : ""}`}
+              </div>
+            ))}
+        </div>
+        <div className="actions">
+          <button
+            onClick={async () => {
+              if (window.chessApi?.resetGame) {
+                const result = await window.chessApi.resetGame();
+                setFen(result.fen);
+                setHistory([]);
+              } else {
+                // Fallback se l'API non è disponibile
+                setFen("start");
+                setHistory([]);
+              }
+            }}
+          >
+            Reset
+          </button>
+        </div>
       </div>
     </div>
   );

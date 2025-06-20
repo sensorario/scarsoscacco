@@ -6,7 +6,7 @@
   "main": "electron/main.cjs",
   "build": {
     "appId": "com.tuonome.app",
-    "productName": "NomeApp",
+    "productName": "Scarso Scacco",
     "files": [
       "dist",
       "electron"

@@ -17,6 +17,11 @@ ipcMain.handle("get-history", () => {
   return game.history();
 });
 
+ipcMain.handle("reset-game", () => {
+  game.reset();
+  return { fen: game.fen() };
+});
+
 function createWindow() {
   const win = new BrowserWindow({
     width: 800,
