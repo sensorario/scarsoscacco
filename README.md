@@ -2,7 +2,7 @@
 
 A modern chess application built with **Electron** and **React**, featuring integrated **Stockfish AI** engine for intelligent gameplay.
 
-![Scarso Scacco Interface](docs/example.png)
+![Scarso Scacco Interface](example.png)
 
 *Main interface showing the chessboard, move history, and control buttons with LinkedIn-inspired design*
 
