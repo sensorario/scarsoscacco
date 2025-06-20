@@ -5,10 +5,14 @@ export default function App() {
   const [fen, setFen] = useState("start");
   const [history, setHistory] = useState([]);
 
+  useEffect(() => {
+    console.log("API expose:", window.api);
+  }, []);
+
   // Recupera la posizione iniziale (o corrente) al primo render
   useEffect(() => {
-    if (window.chessApi?.getFen) {
-      window.chessApi.getFen().then(setFen);
+    if (window.api.chessApi?.getFen) {
+      window.api.chessApi.getFen().then(setFen);
     }
   }, []);
 
@@ -17,13 +21,11 @@ export default function App() {
   }, [history]);
 
   // Gestore del movimento dei pezzi
-  const onDrop = async (sourceSquare, targetSquare) => {
-    // if (!window.chessApi?.makeMove) return false;
-
-    const response = await window.chessApi.makeMove({
-      from: sourceSquare,
-      to: targetSquare,
-      promotion: "q", // promozione automatica a donna
+  const onDrop = async (from, to) => {
+    const response = await window.api.chessApi.makeMove({
+      from,
+      to,
+      promotion: "q",
     });
 
     if (response.error) {
@@ -31,9 +33,8 @@ export default function App() {
       return false;
     }
 
-    setFen(response.fen); // aggiorna la posizione
-    const newHistory = await window.chessApi.getHistory(); // 👈
-    setHistory([...newHistory]);
+    setFen(response.fen);
+    setHistory(await window.api.chessApi.getHistory());
 
     return true;
   };
@@ -78,8 +79,8 @@ export default function App() {
         <div className="actions">
           <button
             onClick={async () => {
-              if (window.chessApi?.resetGame) {
-                const result = await window.chessApi.resetGame();
+              if (window.api.chessApi?.resetGame) {
+                const result = await window.api.chessApi.resetGame();
                 setFen(result.fen);
                 setHistory([]);
               } else {

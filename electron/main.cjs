@@ -1,6 +1,7 @@
 const { app, BrowserWindow, ipcMain } = require("electron");
 const path = require("path");
 const { Chess } = require("chess.js"); // chess.js v1 compatibile con require
+
 const game = new Chess(); // stato globale della partita
 
 ipcMain.handle("make-move", (_, move) => {

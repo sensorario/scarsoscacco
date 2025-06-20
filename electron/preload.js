@@ -1,8 +1,10 @@
 const { contextBridge, ipcRenderer } = require("electron");
 
-contextBridge.exposeInMainWorld("chessApi", {
-  makeMove: (move) => ipcRenderer.invoke("make-move", move),
-  getFen: () => ipcRenderer.invoke("get-fen"),
-  getHistory: () => ipcRenderer.invoke("get-history"),
-  resetGame: () => ipcRenderer.invoke("reset-game"),
+contextBridge.exposeInMainWorld("api", {
+  chessApi: {
+    makeMove: (move) => ipcRenderer.invoke("make-move", move),
+    getFen: () => ipcRenderer.invoke("get-fen"),
+    getHistory: () => ipcRenderer.invoke("get-history"),
+    resetGame: () => ipcRenderer.invoke("reset-game"),
+  },
 });
