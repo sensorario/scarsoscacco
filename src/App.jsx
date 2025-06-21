@@ -1,5 +1,6 @@
 import { useEffect, useState, useRef } from "react";
 import { Chessboard } from "react-chessboard";
+import "./App.css";
 
 export default function App() {
   const [fen, setFen] = useState("start");
@@ -88,89 +89,19 @@ export default function App() {
   };
 
   return (
-    <div style={{ fontFamily: "'Inter', 'Segoe UI', 'Roboto', sans-serif" }}>
-      <header
-        style={{
-          padding: "15px 30px",
-          backgroundColor: "#0077B5",
-          borderBottom: "1px solid #005885",
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          boxShadow: "0 2px 8px rgba(0, 119, 181, 0.2)",
-        }}
-      >
-        <h1
-          style={{
-            margin: 0,
-            fontSize: "26px",
-            color: "white",
-            fontWeight: "600",
-            letterSpacing: "-0.5px",
-          }}
-        >
-          Scarso Scacco
-        </h1>
-        <span
-          style={{
-            fontSize: "14px",
-            color: "rgba(255, 255, 255, 0.8)",
-            fontWeight: "500",
-          }}
-        >
-          v{version}
-        </span>
+    <div className="app-container">
+      <header className="app-header">
+        <h1 className="app-title">Scarso Scacco</h1>
+        <span className="app-version">v{version}</span>
       </header>
-      <div
-        style={{
-          marginTop: 30,
-          display: "flex",
-          flexDirection: "row",
-          gap: 30,
-          backgroundColor: "#f8f9fa",
-          minHeight: "calc(100vh - 70px)",
-          padding: "20px 0",
-          justifyContent: "space-around",
-        }}
-      >
-        <div className="left">
+      <div className="main-content">
+        <div className="left-panel">
           <Chessboard position={fen} onPieceDrop={onDrop} boardWidth={500} />
         </div>
-        <div
-          className="right"
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            gap: 30,
-          }}
-        >
-          <div
-            ref={movesRef}
-            className="moves"
-            style={{
-              backgroundColor: "white",
-              padding: "20px",
-              borderRadius: "8px",
-              boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
-              maxHeight: "400px",
-              overflowY: "auto",
-              minWidth: "200px",
-              display: "flex",
-              flexDirection: "column",
-            }}
-          >
-            <h3
-              style={{
-                margin: "0 0 15px 0",
-                color: "#0077B5",
-                fontSize: "16px",
-                fontWeight: "600",
-                flexShrink: 0,
-              }}
-            >
-              Storia Mosse
-            </h3>
-            <div style={{ flex: 1 }}></div>
+        <div className="right-panel">
+          <div ref={movesRef} className="moves-container">
+            <h3 className="moves-title">Storia Mosse</h3>
+            <div className="moves-spacer"></div>
             <div>
               {history
                 .reduce((pairs, move, index) => {
@@ -182,24 +113,13 @@ export default function App() {
                   return pairs;
                 }, [])
                 .map((pair, index) => (
-                  <div
-                    key={`move-${index + 1}`}
-                    style={{
-                      padding: "4px 0",
-                      fontSize: "14px",
-                      color: "#333",
-                      fontFamily: "'Monaco', 'Consolas', monospace",
-                    }}
-                  >
+                  <div key={`move-${index + 1}`} className="move-item">
                     {`${index + 1}. ${pair[0]}${pair[1] ? ` ${pair[1]}` : ""}`}
                   </div>
                 ))}
             </div>
           </div>
-          <div
-            className="actions"
-            style={{ display: "flex", flexDirection: "column", gap: "12px" }}
-          >
+          <div className="actions-container">
             <button
               onClick={async () => {
                 if (window.api.chessApi?.resetGame) {
@@ -212,41 +132,12 @@ export default function App() {
                   setHistory([]);
                 }
               }}
-              style={{
-                backgroundColor: "#0077B5",
-                color: "white",
-                border: "none",
-                padding: "12px 24px",
-                borderRadius: "6px",
-                fontSize: "14px",
-                fontWeight: "600",
-                cursor: "pointer",
-                transition: "background-color 0.2s",
-                fontFamily: "inherit",
-              }}
-              onMouseOver={(e) => (e.target.style.backgroundColor = "#005885")}
-              onMouseOut={(e) => (e.target.style.backgroundColor = "#0077B5")}
+              className="btn btn-primary"
             >
               Reset
             </button>
 
-            <button
-              onClick={handleStockfishMove}
-              style={{
-                backgroundColor: "#28a745",
-                color: "white",
-                border: "none",
-                padding: "12px 24px",
-                borderRadius: "6px",
-                fontSize: "14px",
-                fontWeight: "600",
-                cursor: "pointer",
-                transition: "background-color 0.2s",
-                fontFamily: "inherit",
-              }}
-              onMouseOver={(e) => (e.target.style.backgroundColor = "#218838")}
-              onMouseOut={(e) => (e.target.style.backgroundColor = "#28a745")}
-            >
+            <button onClick={handleStockfishMove} className="btn btn-success">
               Mossa Stockfish
             </button>
           </div>
