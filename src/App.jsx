@@ -12,6 +12,7 @@ export default function App() {
   const [boardOrientation, setBoardOrientation] = useState("white");
   const [bestMove, setBestMove] = useState("");
   const [showBestMove, setShowBestMove] = useState(false);
+  const [arrows, setArrows] = useState([]);
   const movesRef = useRef(null);
 
   useEffect(() => {
@@ -53,6 +54,9 @@ export default function App() {
     setFen(playerMove.fen);
     setHistory(await window.api.chessApi.getHistory());
 
+    // Aggiorna le frecce dopo la mossa del giocatore
+    await updateArrows(playerMove.fen);
+
     // Mossa automatica di Stockfish
     try {
       const bestMove = await window.api.stockfish.getBestMove(playerMove.fen);
@@ -66,6 +70,8 @@ export default function App() {
       if (!aiMove.error) {
         setFen(aiMove.fen);
         setHistory(await window.api.chessApi.getHistory());
+        // Aggiorna le frecce dopo la mossa dell'AI
+        await updateArrows(aiMove.fen);
         // Aggiorna la mossa migliore dopo la mossa dell'AI
         await updateBestMove(aiMove.fen);
       }
@@ -90,6 +96,8 @@ export default function App() {
       if (!response.error) {
         setFen(response.fen);
         setHistory(await window.api.chessApi.getHistory());
+        // Aggiorna le frecce dopo la mossa manuale di Stockfish
+        await updateArrows(response.fen);
         // Aggiorna la mossa migliore dopo la mossa manuale di Stockfish
         await updateBestMove(response.fen);
       }
@@ -104,12 +112,16 @@ export default function App() {
       const result = await window.api.chessApi.resetGame();
       setFen(result.fen);
       setHistory([]);
+      // Aggiorna le frecce dopo il reset
+      await updateArrows(result.fen);
       // Aggiorna la mossa migliore dopo il reset
       await updateBestMove(result.fen);
     } else {
       // Fallback se l'API non è disponibile
       setFen("start");
       setHistory([]);
+      // Aggiorna le frecce dopo il reset
+      await updateArrows("start");
       // Aggiorna la mossa migliore dopo il reset
       await updateBestMove("start");
     }
@@ -118,6 +130,21 @@ export default function App() {
   // Funzione per girare la scacchiera
   const handleFlipBoard = () => {
     setBoardOrientation((prev) => (prev === "white" ? "black" : "white"));
+  };
+
+  // Funzione per aggiornare le frecce con le mosse migliori
+  const updateArrows = async (currentFen) => {
+    try {
+      const multipleMoves =
+        await window.api.stockfish.getMultipleMoves(currentFen);
+      const newArrows = multipleMoves.map((move, index) => {
+        return [move.slice(0, 2), move.slice(2, 4)];
+      });
+      setArrows(newArrows);
+    } catch (error) {
+      console.error("Errore nel recuperare le mosse multiple:", error);
+      setArrows([]);
+    }
   };
 
   // Funzione per aggiornare la mossa migliore
@@ -160,6 +187,8 @@ export default function App() {
             onPieceDrop={onDrop}
             boardWidth={500}
             boardOrientation={boardOrientation}
+            customArrows={arrows}
+            areArrowsAllowed={true}
           />
         </div>
         <div className="right-panel">

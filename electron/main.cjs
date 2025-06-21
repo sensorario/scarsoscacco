@@ -69,6 +69,58 @@ ipcMain.handle("get-best-move", (_, fen) => {
   });
 });
 
+ipcMain.handle("get-multiple-moves", (_, fen) => {
+  return new Promise((resolve, reject) => {
+    if (!stockfishEngine) {
+      reject(new Error("Stockfish non inizializzato"));
+      return;
+    }
+
+    const moves = [];
+    let finished = false;
+
+    const onMessage = (line) => {
+      if (typeof line === "string") {
+        if (
+          line.includes("info") &&
+          line.includes("pv") &&
+          line.includes("multipv")
+        ) {
+          // Parse multipv line to extract move
+          const pvMatch = line.match(/pv\s+([a-h][1-8][a-h][1-8][qrbn]?)/);
+          const multipvMatch = line.match(/multipv\s+(\d+)/);
+
+          if (pvMatch && multipvMatch) {
+            const move = pvMatch[1];
+            const index = parseInt(multipvMatch[1]) - 1;
+            moves[index] = move;
+          }
+        } else if (line.includes("bestmove") && !finished) {
+          finished = true;
+          stockfishEngine.removeMessageListener(onMessage);
+          // Return up to 3 moves, filtering out any undefined values
+          resolve(moves.filter((move) => move).slice(0, 3));
+        }
+      }
+    };
+
+    stockfishEngine.addMessageListener(onMessage);
+    stockfishEngine.postMessage("setoption name MultiPV value 3");
+    stockfishEngine.postMessage(`position fen ${fen}`);
+    stockfishEngine.postMessage("go depth 10");
+
+    // Timeout dopo 5 secondi
+    setTimeout(() => {
+      if (!finished) {
+        finished = true;
+        stockfishEngine.removeMessageListener(onMessage);
+        stockfishEngine.postMessage("setoption name MultiPV value 1"); // Reset MultiPV
+        reject(new Error("Timeout"));
+      }
+    }, 5000);
+  });
+});
+
 function createWindow() {
   // Percorso corretto per preload in dev e production
   const preloadPath = app.isPackaged

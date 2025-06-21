@@ -3,6 +3,7 @@ const { contextBridge, ipcRenderer } = require("electron");
 contextBridge.exposeInMainWorld("api", {
   stockfish: {
     getBestMove: (fen) => ipcRenderer.invoke("get-best-move", fen),
+    getMultipleMoves: (fen) => ipcRenderer.invoke("get-multiple-moves", fen),
   },
   chessApi: {
     makeMove: (move) => ipcRenderer.invoke("make-move", move),
