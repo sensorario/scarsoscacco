@@ -1,7 +1,7 @@
 {
   "name": "scarsoscacco",
   "private": true,
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A modern chess application with integrated Stockfish AI engine built with Electron and React",
   "author": "Scarso Scacco Team",
   "type": "module",
