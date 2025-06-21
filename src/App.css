@@ -84,6 +84,7 @@
 }
 
 .move-item {
+    text-align: left;
     padding: 4px 0;
     font-size: 14px;
     color: #333;

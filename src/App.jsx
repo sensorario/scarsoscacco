@@ -13,6 +13,7 @@ export default function App() {
   const [bestMove, setBestMove] = useState("");
   const [showBestMove, setShowBestMove] = useState(false);
   const [arrows, setArrows] = useState([]);
+  const [autoMove, setAutoMove] = useState(true);
   const movesRef = useRef(null);
 
   useEffect(() => {
@@ -57,26 +58,28 @@ export default function App() {
     // Aggiorna le frecce dopo la mossa del giocatore
     await updateArrows(playerMove.fen);
 
-    // Mossa automatica di Stockfish
-    try {
-      const bestMove = await window.api.stockfish.getBestMove(playerMove.fen);
+    // Mossa automatica di Stockfish (solo se autoMove è abilitato)
+    if (autoMove) {
+      try {
+        const bestMove = await window.api.stockfish.getBestMove(playerMove.fen);
 
-      const aiMove = await window.api.chessApi.makeMove({
-        from: bestMove.substring(0, 2),
-        to: bestMove.substring(2, 4),
-        promotion: "q",
-      });
+        const aiMove = await window.api.chessApi.makeMove({
+          from: bestMove.substring(0, 2),
+          to: bestMove.substring(2, 4),
+          promotion: "q",
+        });
 
-      if (!aiMove.error) {
-        setFen(aiMove.fen);
-        setHistory(await window.api.chessApi.getHistory());
-        // Aggiorna le frecce dopo la mossa dell'AI
-        await updateArrows(aiMove.fen);
-        // Aggiorna la mossa migliore dopo la mossa dell'AI
-        await updateBestMove(aiMove.fen);
+        if (!aiMove.error) {
+          setFen(aiMove.fen);
+          setHistory(await window.api.chessApi.getHistory());
+          // Aggiorna le frecce dopo la mossa dell'AI
+          await updateArrows(aiMove.fen);
+          // Aggiorna la mossa migliore dopo la mossa dell'AI
+          await updateBestMove(aiMove.fen);
+        }
+      } catch (error) {
+        console.error("Errore Stockfish:", error);
       }
-    } catch (error) {
-      console.error("Errore Stockfish:", error);
     }
 
     return true;
@@ -138,7 +141,9 @@ export default function App() {
       const multipleMoves =
         await window.api.stockfish.getMultipleMoves(currentFen);
       const newArrows = multipleMoves.map((move, index) => {
-        return [move.slice(0, 2), move.slice(2, 4)];
+        const colorMap = ["#FF0000", "#00FF00", "#0000FF"];
+        const color = colorMap[index % colorMap.length];
+        return [move.slice(0, 2), move.slice(2, 4), color];
       });
       setArrows(newArrows);
     } catch (error) {
@@ -175,6 +180,11 @@ export default function App() {
         console.error("Errore nel recuperare la mossa migliore:", error);
       }
     }
+  };
+
+  // Funzione per attivare/disattivare la mossa automatica
+  const handleToggleAutoMove = () => {
+    setAutoMove((prev) => !prev);
   };
 
   return (
@@ -214,6 +224,8 @@ export default function App() {
             onStockfishMove={handleStockfishMove}
             onFlipBoard={handleFlipBoard}
             onShowBestMove={handleShowBestMove}
+            onToggleAutoMove={handleToggleAutoMove}
+            autoMove={autoMove}
           />
         </div>
       </div>

@@ -5,6 +5,8 @@ export default function GameActions({
   onStockfishMove,
   onFlipBoard,
   onShowBestMove,
+  onToggleAutoMove,
+  autoMove,
 }) {
   return (
     <div className="actions-container">
@@ -21,6 +23,12 @@ export default function GameActions({
       <button onClick={onShowBestMove} className="btn btn-warning">
         Toggle Best Move
       </button>
+      <button
+        onClick={onToggleAutoMove}
+        className={`btn ${autoMove ? "btn-success" : "btn-secondary"}`}
+      >
+        {autoMove ? "Auto Move ON" : "Auto Move OFF"}
+      </button>
     </div>
   );
 }
@@ -30,4 +38,6 @@ GameActions.propTypes = {
   onStockfishMove: PropTypes.func.isRequired,
   onFlipBoard: PropTypes.func.isRequired,
   onShowBestMove: PropTypes.func.isRequired,
+  onToggleAutoMove: PropTypes.func.isRequired,
+  autoMove: PropTypes.bool.isRequired,
 };
