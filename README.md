@@ -6,18 +6,6 @@ A modern chess application built with **Electron** and **React**, featuring inte
 
 *Main interface showing the chessboard, move history, and control buttons with LinkedIn-inspired design*
 
-## 🚀 Features
-
-- ✅ **Interactive Chess Board** - Drag and drop pieces with validation
-- ✅ **Stockfish AI Integration** - Automatic AI responses using WebAssembly
-- ✅ **Move History** - Track and display all moves in algebraic notation
-- ✅ **Auto-scroll** - Latest moves always visible at the bottom
-- ✅ **Reset Game** - Full synchronization between UI and engine
-- ✅ **Modern UI** - LinkedIn-inspired theme with Inter font
-- ✅ **Cross-platform** - macOS, Windows, and Linux support
-- ✅ **Self-contained** - No external dependencies required
-- ✅ **Version Display** - Automatic version from package.json
-
 ## 🛠️ Prerequisites
 
 Before you begin, ensure you have the following installed:
@@ -135,24 +123,6 @@ After building, you'll find the distributables in the `dist/` folder:
 | `npm run lint` | Run ESLint |
 | `npm run preview` | Preview production build |
 
-## 🏗️ Project Structure
-
-```
-scarsoscacco/
-├── electron/
-│   ├── main.cjs          # Main Electron process
-│   └── preload.js        # Preload script for IPC
-├── src/
-│   ├── App.jsx           # Main React component
-│   ├── App.css           # Component styles
-│   ├── index.css         # Global styles
-│   └── main.jsx          # React entry point
-├── public/               # Static assets
-├── dist/                 # Build output
-├── package.json          # Dependencies and scripts
-└── README.md            # This file
-```
-
 ## 🔧 Technologies Used
 
 - **[Electron](https://electronjs.org/)** - Desktop app framework
@@ -162,43 +132,3 @@ scarsoscacco/
 - **[Chess.js](https://github.com/jhlywa/chess.js)** - Chess game logic
 - **[Stockfish.wasm](https://github.com/niklasf/stockfish.wasm)** - Chess engine
 - **[Inter Font](https://rsms.me/inter/)** - Modern typography
-
-## ⚙️ Configuration
-
-### Version Management
-The app version is automatically read from `package.json`. To update:
-
-```json
-{
-  "version": "1.1.0"
-}
-```
-
-This will update:
-- App header display
-- Build file names
-- DMG/installer names
-
-### Window Settings
-Modify `electron/main.cjs` to change window properties:
-
-```javascript
-const win = new BrowserWindow({
-  width: 1024,
-  height: 700,
-  // ... other options
-});
-```
-
-## 🐛 Troubleshooting
-
-### Common Issues
-
-**"Module not found" errors**
-```bash
-rm -rf node_modules package-lock.json
-npm install
-```
-
-**Build fails on Windows**
--
