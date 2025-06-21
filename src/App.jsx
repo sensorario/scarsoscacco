@@ -182,14 +182,23 @@ export default function App() {
       <Header version={version} />
       <div className="main-content">
         <div className="left-panel">
-          <Chessboard
-            position={fen}
-            onPieceDrop={onDrop}
-            boardWidth={500}
-            boardOrientation={boardOrientation}
-            customArrows={arrows}
-            areArrowsAllowed={true}
-          />
+          {showBestMove && (
+            <Chessboard
+              position={fen}
+              onPieceDrop={onDrop}
+              boardWidth={500}
+              boardOrientation={boardOrientation}
+              customArrows={arrows}
+            />
+          )}
+          {!showBestMove && (
+            <Chessboard
+              position={fen}
+              onPieceDrop={onDrop}
+              boardWidth={500}
+              boardOrientation={boardOrientation}
+            />
+          )}
         </div>
         <div className="right-panel">
           <div className="moves-indicator">
