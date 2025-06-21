@@ -9,6 +9,7 @@
   "build": {
     "appId": "com.tuonome.app",
     "productName": "Scarso Scacco",
+    "icon": "assets/icon.png",
     "files": [
       "dist",
       "electron"
@@ -20,7 +21,8 @@
       "buildResources": "assets"
     },
     "mac": {
-      "target": "dmg"
+      "target": "dmg",
+      "icon": "assets/icon.png"
     },
     "win": {
       "target": [
@@ -38,10 +40,12 @@
           ]
         }
       ],
-      "requestedExecutionLevel": "asInvoker"
+      "requestedExecutionLevel": "asInvoker",
+      "icon": "assets/icon.png"
     },
     "linux": {
-      "target": "AppImage"
+      "target": "AppImage",
+      "icon": "assets/icon.png"
     }
   },
   "scripts": {
@@ -59,7 +63,7 @@
   },
   "dependencies": {
     "chess.js": "^1.4.0",
-    "chessground": "^9.2.1",
+    "prop-types": "^15.8.1",
     "react": "^19.1.0",
     "react-chessboard": "^4.7.3",
     "react-dom": "^19.1.0",

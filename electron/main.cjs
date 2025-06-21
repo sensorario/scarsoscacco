@@ -82,6 +82,9 @@ function createWindow() {
   const win = new BrowserWindow({
     width: 1024,
     height: 700,
+    icon: app.isPackaged
+      ? path.join(__dirname, "../assets/icon.png")
+      : path.join(__dirname, "../assets/icon.png"),
     webPreferences: {
       preload: preloadPath,
       contextIsolation: true,
@@ -93,7 +96,10 @@ function createWindow() {
     win.loadFile(path.join(__dirname, "../dist/index.html"));
   } else {
     win.loadURL("http://localhost:5173");
-    win.webContents.openDevTools();
+    // Only open DevTools in development
+    if (!app.isPackaged) {
+      win.webContents.openDevTools();
+    }
   }
 }
 
