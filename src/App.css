@@ -42,18 +42,19 @@
     gap: 30px;
     background-color: #f8f9fa;
     min-height: calc(100vh - 70px);
-    padding: 20px 0;
-    justify-content: space-around;
+    padding: 20px 30px;
 }
 
 .left-panel {
-    /* Chessboard container - no specific styles needed */
+    flex-shrink: 0;
+    /* Chessboard container - fixed width */
 }
 
 .right-panel {
     display: flex;
     flex-direction: row;
     gap: 30px;
+    flex: 1;
 }
 
 /* Moves History */
@@ -67,6 +68,7 @@
     min-width: 200px;
     display: flex;
     flex-direction: column;
+    flex: 1;
 }
 
 .moves-title {
@@ -93,6 +95,7 @@
     display: flex;
     flex-direction: column;
     gap: 12px;
+    flex-shrink: 0;
 }
 
 /* Buttons */

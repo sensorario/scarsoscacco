@@ -1,5 +1,7 @@
 import { useEffect, useState, useRef } from "react";
 import { Chessboard } from "react-chessboard";
+import Header from "./components/Header";
+import MovesHistory from "./components/MovesHistory";
 import "./App.css";
 
 export default function App() {
@@ -90,35 +92,13 @@ export default function App() {
 
   return (
     <div className="app-container">
-      <header className="app-header">
-        <h1 className="app-title">Scarso Scacco</h1>
-        <span className="app-version">v{version}</span>
-      </header>
+      <Header version={version} />
       <div className="main-content">
         <div className="left-panel">
           <Chessboard position={fen} onPieceDrop={onDrop} boardWidth={500} />
         </div>
         <div className="right-panel">
-          <div ref={movesRef} className="moves-container">
-            <h3 className="moves-title">Storia Mosse</h3>
-            <div className="moves-spacer"></div>
-            <div>
-              {history
-                .reduce((pairs, move, index) => {
-                  if (index % 2 === 0) {
-                    pairs.push([move]);
-                  } else {
-                    pairs[pairs.length - 1].push(move);
-                  }
-                  return pairs;
-                }, [])
-                .map((pair, index) => (
-                  <div key={`move-${index + 1}`} className="move-item">
-                    {`${index + 1}. ${pair[0]}${pair[1] ? ` ${pair[1]}` : ""}`}
-                  </div>
-                ))}
-            </div>
-          </div>
+          <MovesHistory ref={movesRef} history={history} />
           <div className="actions-container">
             <button
               onClick={async () => {
