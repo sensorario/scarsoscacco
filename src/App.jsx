@@ -2,12 +2,14 @@ import { useEffect, useState, useRef } from "react";
 import { Chessboard } from "react-chessboard";
 import Header from "./components/Header";
 import MovesHistory from "./components/MovesHistory";
+import GameActions from "./components/GameActions";
 import "./App.css";
 
 export default function App() {
   const [fen, setFen] = useState("start");
   const [history, setHistory] = useState([]);
   const [version, setVersion] = useState("");
+  const [boardOrientation, setBoardOrientation] = useState("white");
   const movesRef = useRef(null);
 
   useEffect(() => {
@@ -90,37 +92,43 @@ export default function App() {
     }
   };
 
+  // Funzione per reset del gioco
+  const handleReset = async () => {
+    if (window.api.chessApi?.resetGame) {
+      const result = await window.api.chessApi.resetGame();
+      setFen(result.fen);
+      setHistory([]);
+    } else {
+      // Fallback se l'API non è disponibile
+      setFen("start");
+      setHistory([]);
+    }
+  };
+
+  // Funzione per girare la scacchiera
+  const handleFlipBoard = () => {
+    setBoardOrientation((prev) => (prev === "white" ? "black" : "white"));
+  };
+
   return (
     <div className="app-container">
       <Header version={version} />
       <div className="main-content">
         <div className="left-panel">
-          <Chessboard position={fen} onPieceDrop={onDrop} boardWidth={500} />
+          <Chessboard
+            position={fen}
+            onPieceDrop={onDrop}
+            boardWidth={500}
+            boardOrientation={boardOrientation}
+          />
         </div>
         <div className="right-panel">
           <MovesHistory ref={movesRef} history={history} />
-          <div className="actions-container">
-            <button
-              onClick={async () => {
-                if (window.api.chessApi?.resetGame) {
-                  const result = await window.api.chessApi.resetGame();
-                  setFen(result.fen);
-                  setHistory([]);
-                } else {
-                  // Fallback se l'API non è disponibile
-                  setFen("start");
-                  setHistory([]);
-                }
-              }}
-              className="btn btn-primary"
-            >
-              Reset
-            </button>
-
-            <button onClick={handleStockfishMove} className="btn btn-success">
-              Mossa Stockfish
-            </button>
-          </div>
+          <GameActions
+            onReset={handleReset}
+            onStockfishMove={handleStockfishMove}
+            onFlipBoard={handleFlipBoard}
+          />
         </div>
       </div>
     </div>
