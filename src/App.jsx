@@ -10,6 +10,8 @@ export default function App() {
   const [history, setHistory] = useState([]);
   const [version, setVersion] = useState("");
   const [boardOrientation, setBoardOrientation] = useState("white");
+  const [bestMove, setBestMove] = useState("");
+  const [showBestMove, setShowBestMove] = useState(false);
   const movesRef = useRef(null);
 
   useEffect(() => {
@@ -64,6 +66,8 @@ export default function App() {
       if (!aiMove.error) {
         setFen(aiMove.fen);
         setHistory(await window.api.chessApi.getHistory());
+        // Aggiorna la mossa migliore dopo la mossa dell'AI
+        await updateBestMove(aiMove.fen);
       }
     } catch (error) {
       console.error("Errore Stockfish:", error);
@@ -86,6 +90,8 @@ export default function App() {
       if (!response.error) {
         setFen(response.fen);
         setHistory(await window.api.chessApi.getHistory());
+        // Aggiorna la mossa migliore dopo la mossa manuale di Stockfish
+        await updateBestMove(response.fen);
       }
     } catch (error) {
       console.error("Errore Stockfish:", error);
@@ -98,16 +104,50 @@ export default function App() {
       const result = await window.api.chessApi.resetGame();
       setFen(result.fen);
       setHistory([]);
+      // Aggiorna la mossa migliore dopo il reset
+      await updateBestMove(result.fen);
     } else {
       // Fallback se l'API non è disponibile
       setFen("start");
       setHistory([]);
+      // Aggiorna la mossa migliore dopo il reset
+      await updateBestMove("start");
     }
   };
 
   // Funzione per girare la scacchiera
   const handleFlipBoard = () => {
     setBoardOrientation((prev) => (prev === "white" ? "black" : "white"));
+  };
+
+  // Funzione per aggiornare la mossa migliore
+  const updateBestMove = async (currentFen) => {
+    if (showBestMove) {
+      try {
+        const bestMoveStr = await window.api.stockfish.getBestMove(currentFen);
+        setBestMove(bestMoveStr);
+      } catch (error) {
+        console.error("Errore nel recuperare la mossa migliore:", error);
+      }
+    }
+  };
+
+  // Funzione per mostrare/nascondere la mossa migliore
+  const handleShowBestMove = async () => {
+    if (showBestMove) {
+      // Hide the best move indicator
+      setShowBestMove(false);
+      setBestMove("");
+    } else {
+      // Show the best move indicator
+      try {
+        const bestMoveStr = await window.api.stockfish.getBestMove(fen);
+        setBestMove(bestMoveStr);
+        setShowBestMove(true);
+      } catch (error) {
+        console.error("Errore nel recuperare la mossa migliore:", error);
+      }
+    }
   };
 
   return (
@@ -123,11 +163,19 @@ export default function App() {
           />
         </div>
         <div className="right-panel">
-          <MovesHistory ref={movesRef} history={history} />
+          <div className="moves-indicator">
+            <MovesHistory ref={movesRef} history={history} />
+            {showBestMove && bestMove && (
+              <div className="best-move-indicator">
+                <strong>Best Move: {bestMove}</strong>
+              </div>
+            )}
+          </div>
           <GameActions
             onReset={handleReset}
             onStockfishMove={handleStockfishMove}
             onFlipBoard={handleFlipBoard}
+            onShowBestMove={handleShowBestMove}
           />
         </div>
       </div>

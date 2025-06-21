@@ -41,24 +41,11 @@ npm run dev:electron
 ```
 
 This single command will:
+
 - Start the Vite dev server on `http://localhost:5173`
 - Wait for Vite to be ready
 - Automatically launch Electron with hot reload
 - Enable developer tools
-
-### Manual Start (Alternative)
-
-```bash
-# Start Vite development server
-npm run dev
-
-# In another terminal, start Electron
-npm run electron
-```
-
-This allows you to start each service manually for more control.
-
-## 🏗️ Building for Production
 
 ### Build All Platforms
 
@@ -87,18 +74,7 @@ npm run build
 
 ## 📁 Output Files
 
-After building, you'll find the distributables in the `dist/` folder:
-
-### macOS
-- `Scarso Scacco-1.0.0-arm64.dmg` - DMG installer for Apple Silicon
-- `Scarso Scacco-1.0.0-x64.dmg` - DMG installer for Intel Macs
-
-### Windows
-- `Scarso Scacco Setup 1.0.0.exe` - NSIS installer (x64 + x86)
-- `Scarso Scacco 1.0.0.exe` - Portable executable (x64 only)
-
-### Linux
-- `Scarso Scacco-1.0.0.AppImage` - Universal Linux package
+Builded files will be found in the `dist/` folder.
 
 ## 🎮 How to Play
 
