@@ -16,8 +16,8 @@ Thank you for your interest in contributing to Scarso Scacco! This document prov
 1. **Fork the repository** on GitHub
 2. **Clone your fork** locally:
    ```bash
-   git clone https://github.com/your-username/chess-electron-react.git
-   cd chess-electron-react
+   git clone https://github.com/sensorario/scarsoscacco.git
+   cd scarsoscacco
    ```
 
 3. **Install dependencies**:
@@ -29,7 +29,7 @@ Thank you for your interest in contributing to Scarso Scacco! This document prov
    ```bash
    # Terminal 1: Start Vite dev server
    npm run dev
-   
+
    # Terminal 2: Start Electron
    npm run electron
    ```
@@ -38,7 +38,7 @@ Thank you for your interest in contributing to Scarso Scacco! This document prov
 
 ### File Structure
 ```
-chess-electron-react/
+scarsoscacco/
 ├── electron/
 │   ├── main.cjs          # Main Electron process
 │   └── preload.js        # IPC bridge

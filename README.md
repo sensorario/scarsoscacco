@@ -138,7 +138,7 @@ After building, you'll find the distributables in the `dist/` folder:
 ## 🏗️ Project Structure
 
 ```
-chess-electron-react/
+scarsoscacco/
 ├── electron/
 │   ├── main.cjs          # Main Electron process
 │   └── preload.js        # Preload script for IPC
