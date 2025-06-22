@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.2.0](https://github.com/sensorario/scarsoscacco/compare/v1.1.2...v1.2.0) (2025-06-22)
+
+
+### Features
+
+* **openings:** add new feature of openings ([3fc1b1d](https://github.com/sensorario/scarsoscacco/commit/3fc1b1d567333e6d4d8dc9fefb0bc4eb385521df))
+* **readme:** update image in readme file ([b0ec1ae](https://github.com/sensorario/scarsoscacco/commit/b0ec1aefe9a23658fa15ad1ab5114e77094a6f87))
+
+
+### Bug Fixes
+
+* **buttons:** wrong color in button ([a2401ae](https://github.com/sensorario/scarsoscacco/commit/a2401ae64c12c907a229eb9c7d21e3467b27a10f))
+* **readme:** add right image with right version ([a61dedf](https://github.com/sensorario/scarsoscacco/commit/a61dedf652f1c1938ab81cfc3e672d773776ceb4))
+
 ### [1.1.2](https://github.com/sensorario/scarsoscacco/compare/v1.1.1...v1.1.2) (2025-06-22)
 
 ### [1.1.1](https://github.com/sensorario/scarsoscacco/compare/v1.1.0...v1.1.1) (2025-06-22)
