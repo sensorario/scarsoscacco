@@ -57,6 +57,15 @@
     flex: 1;
 }
 
+.controls-section {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    flex-shrink: 0;
+    min-width: 280px;
+    max-width: 345px;
+}
+
 /* Moves History */
 .moves-container {
     background-color: white;
@@ -101,7 +110,8 @@
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    height: 500px;
+    height: auto;
+    min-height: 200px;
 
     h3 {
         margin: 0 0 15px 0;
@@ -173,6 +183,75 @@
         opacity: 1;
         transform: translateY(0);
     }
+}
+
+/* Opening Selector */
+.opening-selector {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.opening-selector h4 {
+    margin: 0 0 15px 0;
+    color: #0077b5;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.select-container {
+    margin-bottom: 15px;
+}
+
+.opening-select {
+    width: 100%;
+    padding: 10px 12px;
+    border: 2px solid #e9ecef;
+    border-radius: 6px;
+    font-size: 14px;
+    font-family: inherit;
+    background-color: white;
+    cursor: pointer;
+    transition: border-color 0.2s;
+}
+
+.opening-select:focus {
+    outline: none;
+    border-color: #0077b5;
+    box-shadow: 0 0 0 3px rgba(0, 119, 181, 0.1);
+}
+
+.opening-select:hover {
+    border-color: #adb5bd;
+}
+
+.opening-info {
+    background-color: #f8f9fa;
+    padding: 15px;
+    border-radius: 6px;
+    border: 1px solid #e9ecef;
+}
+
+.opening-description {
+    margin: 0 0 10px 0;
+    font-size: 14px;
+    color: #495057;
+    font-style: italic;
+    line-height: 1.4;
+}
+
+.opening-moves {
+    margin: 0;
+    font-size: 13px;
+    color: #6c757d;
+    font-family: "Monaco", "Consolas", monospace;
+    line-height: 1.4;
+}
+
+.opening-moves strong {
+    color: #495057;
+    font-family: inherit;
 }
 
 /* Legacy styles - keeping for potential backward compatibility */

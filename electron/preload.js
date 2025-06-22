@@ -11,5 +11,7 @@ contextBridge.exposeInMainWorld("api", {
     getHistory: () => ipcRenderer.invoke("get-history"),
     resetGame: () => ipcRenderer.invoke("reset-game"),
     getVersion: () => ipcRenderer.invoke("get-version"),
+    setOpeningPosition: (moves) =>
+      ipcRenderer.invoke("set-opening-position", moves),
   },
 });

@@ -3,6 +3,7 @@ import { Chessboard } from "react-chessboard";
 import Header from "./components/Header";
 import MovesHistory from "./components/MovesHistory";
 import GameActions from "./components/GameActions";
+import OpeningSelector from "./components/OpeningSelector";
 import "./App.css";
 
 export default function App() {
@@ -14,6 +15,7 @@ export default function App() {
   const [showBestMove, setShowBestMove] = useState(false);
   const [arrows, setArrows] = useState([]);
   const [autoMove, setAutoMove] = useState(true);
+  const [currentOpening, setCurrentOpening] = useState(null);
   const movesRef = useRef(null);
 
   useEffect(() => {
@@ -115,6 +117,7 @@ export default function App() {
       const result = await window.api.chessApi.resetGame();
       setFen(result.fen);
       setHistory([]);
+      setCurrentOpening(null);
       // Aggiorna le frecce dopo il reset
       await updateArrows(result.fen);
       // Aggiorna la mossa migliore dopo il reset
@@ -123,6 +126,7 @@ export default function App() {
       // Fallback se l'API non è disponibile
       setFen("start");
       setHistory([]);
+      setCurrentOpening(null);
       // Aggiorna le frecce dopo il reset
       await updateArrows("start");
       // Aggiorna la mossa migliore dopo il reset
@@ -187,6 +191,36 @@ export default function App() {
     setAutoMove((prev) => !prev);
   };
 
+  // Funzione per gestire la selezione di un'apertura
+  const handleOpeningSelect = async (opening) => {
+    try {
+      setCurrentOpening(opening);
+
+      if (opening.moves && opening.moves.length > 0) {
+        const result = await window.api.chessApi.setOpeningPosition(
+          opening.moves,
+        );
+
+        if (result.error) {
+          console.error("Error setting opening position:", result.error);
+          return;
+        }
+
+        setFen(result.fen);
+        setHistory(result.history || []);
+
+        // Update arrows and best move for the new position
+        await updateArrows(result.fen);
+        await updateBestMove(result.fen);
+      } else {
+        // Starting position
+        handleReset();
+      }
+    } catch (error) {
+      console.error("Error selecting opening:", error);
+    }
+  };
+
   return (
     <div className="app-container">
       <Header version={version} />
@@ -211,6 +245,21 @@ export default function App() {
           )}
         </div>
         <div className="right-panel">
+          <div className="controls-section">
+            <OpeningSelector
+              onOpeningSelect={handleOpeningSelect}
+              currentOpening={currentOpening?.id}
+            />
+            <GameActions
+              onReset={handleReset}
+              onStockfishMove={handleStockfishMove}
+              onFlipBoard={handleFlipBoard}
+              onShowBestMove={handleShowBestMove}
+              onToggleAutoMove={handleToggleAutoMove}
+              autoMove={autoMove}
+              showBestMove={showBestMove}
+            />
+          </div>
           <div className="moves-indicator">
             <MovesHistory ref={movesRef} history={history} />
             {showBestMove && bestMove && (
@@ -219,15 +268,6 @@ export default function App() {
               </div>
             )}
           </div>
-          <GameActions
-            onReset={handleReset}
-            onStockfishMove={handleStockfishMove}
-            onFlipBoard={handleFlipBoard}
-            onShowBestMove={handleShowBestMove}
-            onToggleAutoMove={handleToggleAutoMove}
-            autoMove={autoMove}
-            showBestMove={showBestMove}
-          />
         </div>
       </div>
     </div>

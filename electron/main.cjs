@@ -30,6 +30,42 @@ ipcMain.handle("get-version", () => {
   return packageJson.version;
 });
 
+// Set opening position by applying a sequence of moves
+ipcMain.handle("set-opening-position", (_, moves) => {
+  try {
+    game.reset(); // Start from initial position
+
+    const appliedMoves = [];
+    for (const moveStr of moves) {
+      const result = game.move(moveStr);
+      if (result === null) {
+        // If move is invalid, reset and return error
+        game.reset();
+        return {
+          error: `Invalid move in opening: ${moveStr}`,
+          fen: game.fen(),
+          appliedMoves: [],
+        };
+      }
+      appliedMoves.push(result);
+    }
+
+    return {
+      success: true,
+      fen: game.fen(),
+      appliedMoves: appliedMoves,
+      history: game.history(),
+    };
+  } catch (error) {
+    game.reset();
+    return {
+      error: `Error applying opening: ${error.message}`,
+      fen: game.fen(),
+      appliedMoves: [],
+    };
+  }
+});
+
 // Inizializza Stockfish
 async function initStockfish() {
   try {
@@ -132,8 +168,8 @@ function createWindow() {
   console.log("__dirname:", __dirname);
 
   const win = new BrowserWindow({
-    width: 1024,
-    height: 700,
+    width: 1180,
+    height: 850,
     icon: app.isPackaged
       ? path.join(__dirname, "../assets/icon.png")
       : path.join(__dirname, "../assets/icon.png"),
