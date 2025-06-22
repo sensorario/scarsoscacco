@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.1.1](https://github.com/sensorario/scarsoscacco/compare/v1.1.0...v1.1.1) (2025-06-22)
+
+
+### Bug Fixes
+
+* **setup:** fis version in window title ([0584e25](https://github.com/sensorario/scarsoscacco/commit/0584e25c63c482a39ea6d133aa8b430a1b6a453c))
+
 ## [1.1.0](https://github.com/sensorario/scarsoscacco/compare/v1.0.0...v1.1.0) (2025-06-22)
 
 
