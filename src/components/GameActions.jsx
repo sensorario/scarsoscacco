@@ -23,7 +23,7 @@ export default function GameActions({
       </button>
       <button
         onClick={onShowBestMove}
-        className={`btn ${autoMove ? "btn-success" : "btn-secondary"}`}
+        className={`btn ${showBestMove ? "btn-success" : "btn-secondary"}`}
       >
         Show Best Move {showBestMove ? "ON" : "OFF"}
       </button>
