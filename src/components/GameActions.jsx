@@ -15,13 +15,16 @@ export default function GameActions({
       <button onClick={onReset} className="btn btn-primary">
         Reset
       </button>
-      <button onClick={onStockfishMove} className="btn btn-success">
+      <button onClick={onStockfishMove} className="btn btn-primary">
         Mossa Stockfish
       </button>
       <button onClick={onFlipBoard} className="btn btn-primary">
         Flip Board
       </button>
-      <button onClick={onShowBestMove} className="btn btn-warning">
+      <button
+        onClick={onShowBestMove}
+        className={`btn ${autoMove ? "btn-success" : "btn-secondary"}`}
+      >
         Show Best Move {showBestMove ? "ON" : "OFF"}
       </button>
       <button
