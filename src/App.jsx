@@ -226,6 +226,7 @@ export default function App() {
             onShowBestMove={handleShowBestMove}
             onToggleAutoMove={handleToggleAutoMove}
             autoMove={autoMove}
+            showBestMove={showBestMove}
           />
         </div>
       </div>

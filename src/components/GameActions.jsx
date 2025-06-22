@@ -7,6 +7,7 @@ export default function GameActions({
   onShowBestMove,
   onToggleAutoMove,
   autoMove,
+  showBestMove,
 }) {
   return (
     <div className="actions-container">
@@ -21,7 +22,7 @@ export default function GameActions({
         Flip Board
       </button>
       <button onClick={onShowBestMove} className="btn btn-warning">
-        Toggle Best Move
+        Show Best Move {showBestMove ? "ON" : "OFF"}
       </button>
       <button
         onClick={onToggleAutoMove}
@@ -40,4 +41,5 @@ GameActions.propTypes = {
   onShowBestMove: PropTypes.func.isRequired,
   onToggleAutoMove: PropTypes.func.isRequired,
   autoMove: PropTypes.bool.isRequired,
+  showBestMove: PropTypes.bool.isRequired,
 };
