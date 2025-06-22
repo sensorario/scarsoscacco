@@ -63,7 +63,7 @@
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    max-height: 400px;
+    height: 500px;
     overflow-y: auto;
     min-width: 200px;
     display: flex;
@@ -97,6 +97,19 @@
     flex-direction: column;
     gap: 12px;
     flex-shrink: 0;
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    height: 500px;
+
+    h3 {
+        margin: 0 0 15px 0;
+        color: #0077b5;
+        font-size: 16px;
+        font-weight: 600;
+        flex-shrink: 0;
+    }
 }
 
 /* Buttons */
