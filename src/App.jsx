@@ -243,6 +243,17 @@ export default function App() {
               boardOrientation={boardOrientation}
             />
           )}
+          <input
+            type="text"
+            style={{
+              margin: "15px",
+              padding: "15px",
+              border: "2px solid #ccc",
+              borderRadius: "5px",
+              width: "calc(100% - 30px)",
+            }}
+            value={fen}
+          />
         </div>
         <div className="right-panel">
           <div className="controls-section">
