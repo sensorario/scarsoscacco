@@ -168,8 +168,8 @@ function createWindow() {
   console.log("__dirname:", __dirname);
 
   const win = new BrowserWindow({
-    width: 1180,
-    height: 850,
+    width: 800,
+    height: 674,
     icon: app.isPackaged
       ? path.join(__dirname, "../assets/icon.png")
       : path.join(__dirname, "../assets/icon.png"),
@@ -178,6 +178,7 @@ function createWindow() {
       contextIsolation: true,
       nodeIntegration: false,
     },
+    resizable: false,
   });
 
   if (app.isPackaged) {

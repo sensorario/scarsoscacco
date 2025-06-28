@@ -1,4 +1,5 @@
 import PropTypes from "prop-types";
+import OpeningSelector from "./OpeningSelector";
 
 export default function Header({ version }) {
   return (
@@ -11,4 +12,6 @@ export default function Header({ version }) {
 
 Header.propTypes = {
   version: PropTypes.string.isRequired,
+  currentOpening: PropTypes.string,
+  handleOpeningSelect: PropTypes.func.isRequired,
 };

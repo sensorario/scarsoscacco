@@ -3,8 +3,9 @@ import { Chessboard } from "react-chessboard";
 import Header from "./components/Header";
 import MovesHistory from "./components/MovesHistory";
 import GameActions from "./components/GameActions";
-import OpeningSelector from "./components/OpeningSelector";
+import TabView from "./components/TabView/TabView";
 import "./App.css";
+import OpeningSelector from "./components/OpeningSelector";
 
 export default function App() {
   const [fen, setFen] = useState("start");
@@ -16,7 +17,24 @@ export default function App() {
   const [arrows, setArrows] = useState([]);
   const [autoMove, setAutoMove] = useState(true);
   const [currentOpening, setCurrentOpening] = useState(null);
+  const [fenMessages, setFenMessages] = useState([]);
   const movesRef = useRef(null);
+
+  useEffect(() => {
+    const searchValue = /%20/g;
+    const replaceValue = "+";
+    const rightFen = encodeURIComponent(fen).replace(searchValue, replaceValue);
+    const url = "https://simonegentili.com/api/chess/fen/" + rightFen;
+    console.log({ fen, url });
+    fetch(url)
+      .then((response) => response.json())
+      .then((data) => {
+        setFenMessages(data);
+      })
+      .catch((error) => {
+        console.error("Error fetching messages:", error);
+      });
+  }, [fen]);
 
   useEffect(() => {
     console.log("API expose:", window.api);
@@ -221,28 +239,40 @@ export default function App() {
     }
   };
 
-  return (
-    <div className="app-container">
-      <Header version={version} />
-      <div className="main-content">
-        <div className="left-panel">
-          {showBestMove && (
-            <Chessboard
-              position={fen}
-              onPieceDrop={onDrop}
-              boardWidth={500}
-              boardOrientation={boardOrientation}
-              customArrows={arrows}
-            />
-          )}
-          {!showBestMove && (
-            <Chessboard
-              position={fen}
-              onPieceDrop={onDrop}
-              boardWidth={500}
-              boardOrientation={boardOrientation}
-            />
-          )}
+  const tabs = [
+    {
+      label: "SCACCHIERA",
+      content: (
+        <div className="la-scacchiera" style={{ display: "flex", gap: "1rem" }}>
+          <div className="chessboard">
+            {showBestMove && (
+              <Chessboard
+                position={fen}
+                onPieceDrop={onDrop}
+                boardWidth={500}
+                boardOrientation={boardOrientation}
+                customArrows={arrows}
+              />
+            )}
+            {!showBestMove && (
+              <Chessboard
+                position={fen}
+                onPieceDrop={onDrop}
+                boardWidth={500}
+                boardOrientation={boardOrientation}
+              />
+            )}
+          </div>
+          <div className="history-panel">
+            <MovesHistory ref={movesRef} history={history} />
+          </div>
+        </div>
+      ),
+    },
+    {
+      label: "NOTE",
+      content: (
+        <div className="">
           <input
             type="text"
             style={{
@@ -254,33 +284,95 @@ export default function App() {
             }}
             value={fen}
           />
-        </div>
-        <div className="right-panel">
-          <div className="controls-section">
-            <OpeningSelector
-              onOpeningSelect={handleOpeningSelect}
-              currentOpening={currentOpening?.id}
+          <div
+            id="fen-message-container"
+            style={{
+              gap: "15px",
+              display: "flex",
+            }}
+          >
+            <input
+              id="fen-message"
+              type="text"
+              style={{
+                padding: "15px",
+                border: "2px solid #ccc",
+                borderRadius: "5px",
+                width: "calc(100% - 30px)",
+              }}
             />
-            <GameActions
-              onReset={handleReset}
-              onStockfishMove={handleStockfishMove}
-              onFlipBoard={handleFlipBoard}
-              onShowBestMove={handleShowBestMove}
-              onToggleAutoMove={handleToggleAutoMove}
-              autoMove={autoMove}
-              showBestMove={showBestMove}
-            />
+            <button
+              className="btn btn-primary"
+              onClick={() => {
+                const message = document.getElementById("fen-message").value;
+                fetch("https://simonegentili.com/api/chess/fen", {
+                  method: "POST",
+                  headers: {
+                    "Content-Type": "application/json",
+                  },
+                  body: JSON.stringify({ fen, message }),
+                })
+                  .then((response) => {
+                    if (!response.ok) {
+                      throw new Error("Network response was not ok");
+                    }
+                    return response.json();
+                  })
+                  .then((data) => {
+                    document.getElementById("fen-message").value = "";
+                    console.log(data);
+                  })
+                  .catch((error) => {
+                    console.error("Error fetching FEN:", error);
+                  });
+              }}
+            >
+              SALVA
+            </button>
           </div>
-          <div className="moves-indicator">
-            <MovesHistory ref={movesRef} history={history} />
-            {showBestMove && bestMove && (
-              <div className="best-move-indicator">
-                <strong>Best Move: {bestMove}</strong>
-              </div>
+
+          <ul>
+            {Object.values(fenMessages).map((message) =>
+              message.message.length > 0 ? <li>{message.message}</li> : null,
             )}
-          </div>
+          </ul>
         </div>
-      </div>
+      ),
+    },
+    {
+      label: "CONFIG",
+      content: (
+        <div className="game-actions">
+          <GameActions
+            onReset={handleReset}
+            onStockfishMove={handleStockfishMove}
+            onFlipBoard={handleFlipBoard}
+            onShowBestMove={handleShowBestMove}
+            onToggleAutoMove={handleToggleAutoMove}
+            autoMove={autoMove}
+            showBestMove={showBestMove}
+            bestMove={bestMove}
+          />
+        </div>
+      ),
+    },
+    {
+      label: "OPENINGS",
+      content: (
+        <div>
+          <OpeningSelector
+            onOpeningSelect={handleOpeningSelect}
+            currentOpening={currentOpening?.id}
+          />
+        </div>
+      ),
+    },
+  ];
+
+  return (
+    <div className="app-container">
+      <Header version={version} />
+      <TabView tabs={tabs} />
     </div>
   );
 }

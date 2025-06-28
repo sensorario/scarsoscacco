@@ -27,7 +27,6 @@ export default function OpeningSelector({ onOpeningSelect, currentOpening }) {
 
   return (
     <div className="opening-selector">
-      <h4>Chess Openings</h4>
       <div className="select-container">
         <select
           value={selectedOpening}

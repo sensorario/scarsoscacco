@@ -8,6 +8,7 @@ export default function GameActions({
   onToggleAutoMove,
   autoMove,
   showBestMove,
+  bestMove,
 }) {
   return (
     <div className="actions-container">
@@ -33,6 +34,12 @@ export default function GameActions({
       >
         {autoMove ? "Auto Move ON" : "Auto Move OFF"}
       </button>
+
+      {showBestMove && bestMove && (
+        <div className="best-move-indicator">
+          <strong>Best Move: {bestMove}</strong>
+        </div>
+      )}
     </div>
   );
 }
@@ -45,4 +52,5 @@ GameActions.propTypes = {
   onToggleAutoMove: PropTypes.func.isRequired,
   autoMove: PropTypes.bool.isRequired,
   showBestMove: PropTypes.bool.isRequired,
+  bestMove: PropTypes.string.isRequired,
 };
