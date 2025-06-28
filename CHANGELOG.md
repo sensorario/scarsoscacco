@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.3.0](https://github.com/sensorario/scarsoscacco/compare/v1.2.1...v1.3.0) (2025-06-28)
+
+
+### Features
+
+* **fen:** close [#16](https://github.com/sensorario/scarsoscacco/issues/16) - display fen string under che chessboard every time position change ([207bd52](https://github.com/sensorario/scarsoscacco/commit/207bd521c3036529299d5f09be4de3384cb731f8))
+* **makefile:** close [#17](https://github.com/sensorario/scarsoscacco/issues/17) - add missing makefile ([8772d8a](https://github.com/sensorario/scarsoscacco/commit/8772d8a356d03ff5d69dd2bb65ecd1787c6b48c4))
+
 ### [1.2.1](https://github.com/sensorario/scarsoscacco/compare/v1.2.0...v1.2.1) (2025-06-22)
 
 
