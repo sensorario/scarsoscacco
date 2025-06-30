@@ -395,12 +395,17 @@ export default function App() {
             </button>
           </div>
 
-          <ul>
-            {formattedFenMessages &&
-              formattedFenMessages.map((message, index) => {
-                return <li key={index}>{message.message}</li>;
+          {formattedFenMessages && (
+            <ul>
+              {formattedFenMessages.map((message, index) => {
+                return (
+                  <li key={index} style={{ textAlign: "left" }}>
+                    {message.message}
+                  </li>
+                );
               })}
-          </ul>
+            </ul>
+          )}
         </div>
       ),
     });

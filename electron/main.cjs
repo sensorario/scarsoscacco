@@ -9,6 +9,7 @@ const game = new Chess(); // stato globale della partita
 let stockfishEngine = null;
 let authenticatedUser = null;
 let mainWindow = null;
+let userToken = null;
 
 const buildAuthWindows = () => {
   return new BrowserWindow({
@@ -54,15 +55,6 @@ ipcMain.handle("open-google-login", async () => {
 
   authWindow.loadURL(authUrl);
 
-  // Puoi anche ascoltare il completamento con authWindow.webContents.on('will-redirect') se vuoi
-  //
-  // authWindow.webContents.on('will-redirect').
-  //
-  //
-  //
-  //
-  //
-
   async function waitForAuthData(win, timeout = 10000, interval = 200) {
     const start = Date.now();
 
@@ -88,7 +80,6 @@ ipcMain.handle("open-google-login", async () => {
 
       const user = JSON.parse(rawUser);
       console.log("✅ Utente autenticato:", user);
-      // mainWindow.send("auth-success", user);
       authenticatedUser = user;
       authWindow.close();
 
