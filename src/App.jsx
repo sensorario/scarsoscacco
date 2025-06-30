@@ -301,6 +301,38 @@ export default function App() {
       ),
     },
     {
+      label: "CONFIG",
+      content: (
+        <div className="game-actions">
+          <GameActions
+            onReset={handleReset}
+            onStockfishMove={handleStockfishMove}
+            onFlipBoard={handleFlipBoard}
+            onShowBestMove={handleShowBestMove}
+            onToggleAutoMove={handleToggleAutoMove}
+            autoMove={autoMove}
+            showBestMove={showBestMove}
+            bestMove={bestMove}
+          />
+        </div>
+      ),
+    },
+  ];
+
+  if (currentUser) {
+    tabs.push({
+      label: "OPENINGS",
+      content: (
+        <div>
+          <OpeningSelector
+            onOpeningSelect={handleOpeningSelect}
+            currentOpening={currentOpening?.id}
+          />
+        </div>
+      ),
+    });
+
+    tabs.push({
       label: "NOTE",
       content: (
         <div className="">
@@ -371,36 +403,8 @@ export default function App() {
           </ul>
         </div>
       ),
-    },
-    {
-      label: "CONFIG",
-      content: (
-        <div className="game-actions">
-          <GameActions
-            onReset={handleReset}
-            onStockfishMove={handleStockfishMove}
-            onFlipBoard={handleFlipBoard}
-            onShowBestMove={handleShowBestMove}
-            onToggleAutoMove={handleToggleAutoMove}
-            autoMove={autoMove}
-            showBestMove={showBestMove}
-            bestMove={bestMove}
-          />
-        </div>
-      ),
-    },
-    {
-      label: "OPENINGS",
-      content: (
-        <div>
-          <OpeningSelector
-            onOpeningSelect={handleOpeningSelect}
-            currentOpening={currentOpening?.id}
-          />
-        </div>
-      ),
-    },
-  ];
+    });
+  }
 
   return (
     <div className="app-container">
