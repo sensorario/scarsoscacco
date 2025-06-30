@@ -19,16 +19,25 @@ export default function App() {
   const [currentOpening, setCurrentOpening] = useState(null);
   const [fenMessages, setFenMessages] = useState([]);
   const movesRef = useRef(null);
+  const [currentUser, setCurrentUser] = useState(null);
+  const [formattedFenMessages, setFormattedFenMessages] = useState([]);
 
   useEffect(() => {
     const searchValue = /%20/g;
     const replaceValue = "+";
     const rightFen = encodeURIComponent(fen).replace(searchValue, replaceValue);
     const url = "https://simonegentili.com/api/chess/fen/" + rightFen;
-    console.log({ fen, url });
-    fetch(url)
+
+    fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ fen, currentUser }),
+    })
       .then((response) => response.json())
       .then((data) => {
+        console.log(data);
         setFenMessages(data);
       })
       .catch((error) => {
@@ -57,6 +66,20 @@ export default function App() {
       movesRef.current.scrollTop = movesRef.current.scrollHeight;
     }
   }, [history]);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      window.api.electronAPI.invoke("get-authenticated-user").then((user) => {
+        if (user) {
+          console.log("Utente attuale:", user);
+          setCurrentUser(user);
+          clearInterval(interval); // Stop retrying once the user is not null
+        }
+      });
+    }, 1000); // Retry every 1 second
+
+    return () => clearInterval(interval); // Cleanup the interval on component unmount
+  }, []);
 
   // Gestore del movimento dei pezzi
   const onDrop = async (from, to) => {
@@ -239,6 +262,14 @@ export default function App() {
     }
   };
 
+  useEffect(() => {
+    const numericKeyValues = Object.keys(fenMessages)
+      .filter((key) => !isNaN(Number(key)))
+      .map((key) => fenMessages[key]);
+    console.log(JSON.stringify(numericKeyValues));
+    setFormattedFenMessages(numericKeyValues);
+  }, [fenMessages]);
+
   const tabs = [
     {
       label: "SCACCHIERA",
@@ -283,6 +314,7 @@ export default function App() {
               width: "calc(100% - 30px)",
             }}
             value={fen}
+            readOnly
           />
           <div
             id="fen-message-container"
@@ -310,7 +342,7 @@ export default function App() {
                   headers: {
                     "Content-Type": "application/json",
                   },
-                  body: JSON.stringify({ fen, message }),
+                  body: JSON.stringify({ fen, message, currentUser }),
                 })
                   .then((response) => {
                     if (!response.ok) {
@@ -332,9 +364,10 @@ export default function App() {
           </div>
 
           <ul>
-            {Object.values(fenMessages).map((message) =>
-              message.message.length > 0 ? <li>{message.message}</li> : null,
-            )}
+            {formattedFenMessages &&
+              formattedFenMessages.map((message, index) => {
+                return <li key={index}>{message.message}</li>;
+              })}
           </ul>
         </div>
       ),
@@ -371,7 +404,7 @@ export default function App() {
 
   return (
     <div className="app-container">
-      <Header version={version} />
+      <Header version={version} currentUser={currentUser} />
       <TabView tabs={tabs} />
     </div>
   );

@@ -3,9 +3,105 @@ const path = require("path");
 const { Chess } = require("chess.js"); // chess.js v1 compatibile con require
 const StockfishFactory = require("stockfish.wasm");
 const packageJson = require("../package.json");
+const { setTimeout } = require("timers");
 
 const game = new Chess(); // stato globale della partita
 let stockfishEngine = null;
+let authenticatedUser = null;
+let mainWindow = null;
+
+const buildAuthWindows = () => {
+  return new BrowserWindow({
+    width: 500,
+    height: 600,
+    webPreferences: {
+      nodeIntegration: false,
+      contextIsolation: false,
+    },
+  });
+};
+
+const buildMainWin = ({ preloadPath }) => {
+  return new BrowserWindow({
+    width: 800,
+    height: 674,
+    icon: app.isPackaged
+      ? path.join(__dirname, "../assets/icon.png")
+      : path.join(__dirname, "../assets/icon.png"),
+    webPreferences: {
+      preload: preloadPath,
+      contextIsolation: true,
+      nodeIntegration: false,
+    },
+    // resizable: false,
+  });
+};
+
+ipcMain.handle("get-authenticated-user", () => {
+  return authenticatedUser; // può essere null o un oggetto utente
+});
+
+ipcMain.handle("open-google-login", async () => {
+  const preloadPath = app.isPackaged
+    ? path.join(__dirname, "preload.js")
+    : path.join(__dirname, "preload.js");
+
+  const authWindow = buildAuthWindows();
+
+  // @todo move client_id in a configuration file
+  const authUrl =
+    "https://accounts.google.com/o/oauth2/v2/auth?client_id=15368719510-up1i58aamuvdvu1u49lerh8lamrrapfj.apps.googleusercontent.com&redirect_uri=https%3A%2F%2Fsimonegentili.com%2Fapi%2Fchess%2Foauth%2Fcallback&response_type=code&scope=email%20profile&access_type=offline&prompt=consent";
+
+  authWindow.loadURL(authUrl);
+
+  // Puoi anche ascoltare il completamento con authWindow.webContents.on('will-redirect') se vuoi
+  //
+  // authWindow.webContents.on('will-redirect').
+  //
+  //
+  //
+  //
+  //
+
+  async function waitForAuthData(win, timeout = 10000, interval = 200) {
+    const start = Date.now();
+
+    while (Date.now() - start < timeout) {
+      const content = await win.webContents.executeJavaScript(`
+        document.getElementById('auth-data')?.innerText;
+      `);
+
+      if (content && content !== "undefined") return content;
+      await new Promise((r) => setTimeout(r, interval));
+    }
+
+    return null; // timeout
+  }
+
+  authWindow.webContents.on("did-finish-load", async () => {
+    try {
+      const rawUser = await waitForAuthData(authWindow);
+      if (!rawUser) {
+        console.error("❌ Auth data non disponibile dopo timeout");
+        return;
+      }
+
+      const user = JSON.parse(rawUser);
+      console.log("✅ Utente autenticato:", user);
+      // mainWindow.send("auth-success", user);
+      authenticatedUser = user;
+      authWindow.close();
+
+      if (mainWindow && mainWindow.webContents) {
+        mainWindow.webContents.send("auth-success", user);
+      } else {
+        console.error("❌ mainWindow non definita");
+      }
+    } catch (err) {
+      console.error("❌ Errore durante l'attesa di auth-data:", err);
+    }
+  });
+});
 
 ipcMain.handle("make-move", (_, move) => {
   const result = game.move(move);
@@ -167,19 +263,8 @@ function createWindow() {
   console.log("App is packaged:", app.isPackaged);
   console.log("__dirname:", __dirname);
 
-  const win = new BrowserWindow({
-    width: 800,
-    height: 674,
-    icon: app.isPackaged
-      ? path.join(__dirname, "../assets/icon.png")
-      : path.join(__dirname, "../assets/icon.png"),
-    webPreferences: {
-      preload: preloadPath,
-      contextIsolation: true,
-      nodeIntegration: false,
-    },
-    resizable: false,
-  });
+  const win = buildMainWin({ preloadPath });
+  mainWindow = win;
 
   if (app.isPackaged) {
     win.loadFile(path.join(__dirname, "../dist/index.html"));

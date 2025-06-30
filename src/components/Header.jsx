@@ -1,10 +1,11 @@
 import PropTypes from "prop-types";
-import OpeningSelector from "./OpeningSelector";
 
-export default function Header({ version }) {
+export default function Header({ version, currentUser }) {
   return (
     <header className="app-header">
-      <h1 className="app-title">Scarso Scacco</h1>
+      <h1 className="app-title">
+        Scarso Scacco {currentUser ? `(${currentUser.name})` : ""}
+      </h1>
       <span className="app-version">v{version}</span>
     </header>
   );

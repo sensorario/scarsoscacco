@@ -1,6 +1,9 @@
 const { contextBridge, ipcRenderer } = require("electron");
 
 contextBridge.exposeInMainWorld("api", {
+  electronAPI: {
+    invoke: (channel, ...args) => ipcRenderer.invoke(channel, ...args),
+  },
   stockfish: {
     getBestMove: (fen) => ipcRenderer.invoke("get-best-move", fen),
     getMultipleMoves: (fen) => ipcRenderer.invoke("get-multiple-moves", fen),

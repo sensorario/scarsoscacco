@@ -40,6 +40,13 @@ export default function GameActions({
           <strong>Best Move: {bestMove}</strong>
         </div>
       )}
+
+      <button
+        className="btn btn-primary"
+        onClick={() => window.api.electronAPI.invoke("open-google-login")}
+      >
+        Login con Google
+      </button>
     </div>
   );
 }
