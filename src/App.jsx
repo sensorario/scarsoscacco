@@ -301,12 +301,14 @@ export default function App() {
             <MovesHistory ref={movesRef} history={history} />
           </div>
           <div className="notes">
-            <Notes
-              fen={fen}
-              currentUser={currentUser}
-              formattedFenMessages={formattedFenMessages}
-              loadNotesHandler={loadNotesHandler}
-            />
+            {currentUser && (
+              <Notes
+                fen={fen}
+                currentUser={currentUser}
+                formattedFenMessages={formattedFenMessages}
+                loadNotesHandler={loadNotesHandler}
+              />
+            )}
           </div>
         </div>
       ),
