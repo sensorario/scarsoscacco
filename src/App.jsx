@@ -4,6 +4,7 @@ import Header from "./components/Header";
 import MovesHistory from "./components/MovesHistory";
 import GameActions from "./components/GameActions";
 import TabView from "./components/TabView/TabView";
+import Notes from "./components/Notes";
 import "./App.css";
 import OpeningSelector from "./components/OpeningSelector";
 
@@ -22,7 +23,7 @@ export default function App() {
   const [currentUser, setCurrentUser] = useState(null);
   const [formattedFenMessages, setFormattedFenMessages] = useState([]);
 
-  useEffect(() => {
+  const loadNotesHandler = () => {
     const searchValue = /%20/g;
     const replaceValue = "+";
     const rightFen = encodeURIComponent(fen).replace(searchValue, replaceValue);
@@ -43,7 +44,9 @@ export default function App() {
       .catch((error) => {
         console.error("Error fetching messages:", error);
       });
-  }, [fen]);
+  };
+
+  useEffect(loadNotesHandler, [fen]);
 
   useEffect(() => {
     console.log("API expose:", window.api);
@@ -297,6 +300,14 @@ export default function App() {
           <div className="history-panel">
             <MovesHistory ref={movesRef} history={history} />
           </div>
+          <div className="notes">
+            <Notes
+              fen={fen}
+              currentUser={currentUser}
+              formattedFenMessages={formattedFenMessages}
+              loadNotesHandler={loadNotesHandler}
+            />
+          </div>
         </div>
       ),
     },
@@ -328,84 +339,6 @@ export default function App() {
             onOpeningSelect={handleOpeningSelect}
             currentOpening={currentOpening?.id}
           />
-        </div>
-      ),
-    });
-
-    tabs.push({
-      label: "NOTE",
-      content: (
-        <div className="">
-          <input
-            type="text"
-            style={{
-              margin: "15px",
-              padding: "15px",
-              border: "2px solid #ccc",
-              borderRadius: "5px",
-              width: "calc(100% - 30px)",
-            }}
-            value={fen}
-            readOnly
-          />
-          <div
-            id="fen-message-container"
-            style={{
-              gap: "15px",
-              display: "flex",
-            }}
-          >
-            <input
-              id="fen-message"
-              type="text"
-              style={{
-                padding: "15px",
-                border: "2px solid #ccc",
-                borderRadius: "5px",
-                width: "calc(100% - 30px)",
-              }}
-            />
-            <button
-              className="btn btn-primary"
-              onClick={() => {
-                const message = document.getElementById("fen-message").value;
-                fetch("https://simonegentili.com/api/chess/fen", {
-                  method: "POST",
-                  headers: {
-                    "Content-Type": "application/json",
-                  },
-                  body: JSON.stringify({ fen, message, currentUser }),
-                })
-                  .then((response) => {
-                    if (!response.ok) {
-                      throw new Error("Network response was not ok");
-                    }
-                    return response.json();
-                  })
-                  .then((data) => {
-                    document.getElementById("fen-message").value = "";
-                    console.log(data);
-                  })
-                  .catch((error) => {
-                    console.error("Error fetching FEN:", error);
-                  });
-              }}
-            >
-              SALVA
-            </button>
-          </div>
-
-          {formattedFenMessages && (
-            <ul>
-              {formattedFenMessages.map((message, index) => {
-                return (
-                  <li key={index} style={{ textAlign: "left" }}>
-                    {message.message}
-                  </li>
-                );
-              })}
-            </ul>
-          )}
         </div>
       ),
     });
