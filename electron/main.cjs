@@ -9,22 +9,10 @@ const game = new Chess(); // stato globale della partita
 let stockfishEngine = null;
 let authenticatedUser = null;
 let mainWindow = null;
-let userToken = null;
-
-const buildAuthWindows = () => {
-  return new BrowserWindow({
-    width: 500,
-    height: 600,
-    webPreferences: {
-      nodeIntegration: false,
-      contextIsolation: false,
-    },
-  });
-};
 
 const buildMainWin = ({ preloadPath }) => {
   return new BrowserWindow({
-    width: 800,
+    width: 1024,
     height: 674,
     icon: app.isPackaged
       ? path.join(__dirname, "../assets/icon.png")
@@ -35,6 +23,17 @@ const buildMainWin = ({ preloadPath }) => {
       nodeIntegration: false,
     },
     // resizable: false,
+  });
+};
+
+const buildAuthWindows = () => {
+  return new BrowserWindow({
+    width: 500,
+    height: 600,
+    webPreferences: {
+      nodeIntegration: false,
+      contextIsolation: false,
+    },
   });
 };
 
@@ -183,7 +182,6 @@ ipcMain.handle("get-best-move", (_, fen) => {
     stockfishEngine.addMessageListener(onMessage);
     stockfishEngine.postMessage(`position fen ${fen}`);
     stockfishEngine.postMessage("go depth 10");
-
     // Timeout dopo 5 secondi
     setTimeout(() => {
       stockfishEngine.removeMessageListener(onMessage);
