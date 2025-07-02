@@ -6,6 +6,16 @@ export default function Header({ version, currentUser }) {
       <h1 className="app-title">
         Scarso Scacco {currentUser ? `(${currentUser.name})` : ""}
       </h1>
+
+      {!currentUser && (
+        <button
+          className="btn btn-secondary"
+          onClick={() => window.api.electronAPI.invoke("open-google-login")}
+        >
+          Login con Google
+        </button>
+      )}
+
       <span className="app-version">v{version}</span>
     </header>
   );
