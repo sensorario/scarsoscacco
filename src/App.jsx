@@ -301,6 +301,9 @@ export default function App() {
             <MovesHistory ref={movesRef} history={history} />
           </div>
           <div className="notes">
+            <button onClick={handleReset} className="btn btn-primary">
+              Reset
+            </button>
             {currentUser && (
               <Notes
                 fen={fen}
@@ -318,7 +321,6 @@ export default function App() {
       content: (
         <div className="game-actions">
           <GameActions
-            onReset={handleReset}
             onStockfishMove={handleStockfishMove}
             onFlipBoard={handleFlipBoard}
             onShowBestMove={handleShowBestMove}
