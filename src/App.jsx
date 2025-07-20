@@ -2,11 +2,9 @@ import { useEffect, useState, useRef } from "react";
 import { Chessboard } from "react-chessboard";
 import Header from "./components/Header";
 import MovesHistory from "./components/MovesHistory";
-import GameActions from "./components/GameActions";
 import TabView from "./components/TabView/TabView";
 import Notes from "./components/Notes";
 import "./App.css";
-import OpeningSelector from "./components/OpeningSelector";
 
 export default function App() {
   const [fen, setFen] = useState("start");
@@ -276,6 +274,33 @@ export default function App() {
   const tabs = [
     {
       label: "SCACCHIERA",
+      toggleButtons: [
+        {
+          label: "Stockfish Move",
+          active: false,
+          onClick: handleStockfishMove,
+        },
+        {
+          label: `Best Move ${showBestMove ? "ON" : "OFF"}`,
+          active: showBestMove,
+          onClick: handleShowBestMove,
+        },
+        {
+          label: `Auto Move ${autoMove ? "ON" : "OFF"}`,
+          active: autoMove,
+          onClick: handleToggleAutoMove,
+        },
+        {
+          label: `Board: ${boardOrientation === "white" ? "White" : "Black"}`,
+          active: boardOrientation === "black",
+          onClick: handleFlipBoard,
+        },
+      ],
+      bestMove: showBestMove && bestMove ? bestMove : null,
+      openingSelector: {
+        currentOpening: currentOpening?.id,
+        onOpeningSelect: handleOpeningSelect,
+      },
       content: (
         <div className="la-scacchiera" style={{ display: "flex", gap: "1rem" }}>
           <div className="chessboard">
@@ -316,37 +341,10 @@ export default function App() {
         </div>
       ),
     },
-    {
-      label: "CONFIG",
-      content: (
-        <div className="game-actions">
-          <GameActions
-            onStockfishMove={handleStockfishMove}
-            onFlipBoard={handleFlipBoard}
-            onShowBestMove={handleShowBestMove}
-            onToggleAutoMove={handleToggleAutoMove}
-            autoMove={autoMove}
-            showBestMove={showBestMove}
-            bestMove={bestMove}
-          />
-        </div>
-      ),
-    },
   ];
 
-  if (currentUser) {
-    tabs.push({
-      label: "OPENINGS",
-      content: (
-        <div>
-          <OpeningSelector
-            onOpeningSelect={handleOpeningSelect}
-            currentOpening={currentOpening?.id}
-          />
-        </div>
-      ),
-    });
-  }
+  console.log("Current user:", currentUser);
+  console.log("Tabs config:", tabs[0]);
 
   return (
     <div className="app-container">
