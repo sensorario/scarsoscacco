@@ -9,6 +9,9 @@ const game = new Chess(); // stato globale della partita
 let stockfishEngine = null;
 let authenticatedUser = null;
 let mainWindow = null;
+const config = {
+  depthString: "go depth 3",
+};
 
 const buildMainWin = ({ preloadPath }) => {
   return new BrowserWindow({
@@ -181,7 +184,7 @@ ipcMain.handle("get-best-move", (_, fen) => {
 
     stockfishEngine.addMessageListener(onMessage);
     stockfishEngine.postMessage(`position fen ${fen}`);
-    stockfishEngine.postMessage("go depth 10");
+    stockfishEngine.postMessage(config.depthString);
     // Timeout dopo 5 secondi
     setTimeout(() => {
       stockfishEngine.removeMessageListener(onMessage);
@@ -228,7 +231,7 @@ ipcMain.handle("get-multiple-moves", (_, fen) => {
     stockfishEngine.addMessageListener(onMessage);
     stockfishEngine.postMessage("setoption name MultiPV value 3");
     stockfishEngine.postMessage(`position fen ${fen}`);
-    stockfishEngine.postMessage("go depth 10");
+    stockfishEngine.postMessage(config.depthString);
 
     // Timeout dopo 5 secondi
     setTimeout(() => {

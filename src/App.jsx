@@ -46,7 +46,7 @@ export default function App() {
       });
   };
 
-  useEffect(loadNotesHandler, [fen]);
+  useEffect(loadNotesHandler, [fen, currentUser]);
 
   useEffect(() => {
     console.log("API expose:", window.api);
