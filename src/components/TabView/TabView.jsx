@@ -5,10 +5,6 @@ export default function TabView({ tabs }) {
   // Always show the first tab's content (SCACCHIERA)
   const selectedTab = 0;
 
-  console.log("TabView - tabs:", tabs);
-  console.log("TabView - selectedTab data:", tabs[selectedTab]);
-  console.log("TabView - openingSelector:", tabs[selectedTab]?.openingSelector);
-
   return (
     <div className="tab-container">
       <div

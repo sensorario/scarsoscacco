@@ -16,7 +16,7 @@ const config = {
 const buildMainWin = ({ preloadPath }) => {
   return new BrowserWindow({
     width: 1024,
-    height: 674,
+    height: 774,
     icon: app.isPackaged
       ? path.join(__dirname, "../assets/icon.png")
       : path.join(__dirname, "../assets/icon.png"),

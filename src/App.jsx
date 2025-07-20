@@ -276,6 +276,11 @@ export default function App() {
       label: "SCACCHIERA",
       toggleButtons: [
         {
+          label: "Reset",
+          active: false,
+          onClick: handleReset,
+        },
+        {
           label: "Stockfish Move",
           active: false,
           onClick: handleStockfishMove,
@@ -326,9 +331,6 @@ export default function App() {
             <MovesHistory ref={movesRef} history={history} />
           </div>
           <div className="notes">
-            <button onClick={handleReset} className="btn btn-primary">
-              Reset
-            </button>
             {currentUser && (
               <Notes
                 fen={fen}
@@ -342,9 +344,6 @@ export default function App() {
       ),
     },
   ];
-
-  console.log("Current user:", currentUser);
-  console.log("Tabs config:", tabs[0]);
 
   return (
     <div className="app-container">
