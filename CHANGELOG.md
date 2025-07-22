@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.4.0](https://github.com/sensorario/scarsoscacco/compare/v1.3.0...v1.4.0) (2025-07-22)
+
+
+### Features
+
+* **auth:** add social login with google to store data according to the current user ([510668a](https://github.com/sensorario/scarsoscacco/commit/510668aee7d102cc3f3aae0b849a28e520004507))
+* **layout:** update main window width ([95f89c1](https://github.com/sensorario/scarsoscacco/commit/95f89c14da6f095804a9413a3041d52bf1ef1090))
+* **login:** move login button in the header ([3b3920a](https://github.com/sensorario/scarsoscacco/commit/3b3920a7cbd1984ad2df0c2f11ea060dbdafed6a))
+* **navbar:** move reset button in navbar ([079c6db](https://github.com/sensorario/scarsoscacco/commit/079c6dbd66b0af880c51b97e128f0e1beabf36f4))
+* **notes:** hide untile the user is not logged in ([4f8a954](https://github.com/sensorario/scarsoscacco/commit/4f8a9543026c1579cc71dd6799337e5a22fa36b7))
+* **notes:** reload notes after new note saved ([9ea5a67](https://github.com/sensorario/scarsoscacco/commit/9ea5a67c6261067462ff538de13564a1a6ae52c3))
+* **reset:** leave reset button in main view ([74cca1e](https://github.com/sensorario/scarsoscacco/commit/74cca1ea93a14665b5686d7fb151029f7beceebe))
+* **stockfish:** change depth ([8c968df](https://github.com/sensorario/scarsoscacco/commit/8c968df836a75493e41edc6adfa60785501b8585))
+* **style:** align fen messages to the left ([49e4e76](https://github.com/sensorario/scarsoscacco/commit/49e4e76724d14b1c9de75bc82cb87baad5d1cd9e))
+* **tabs:** hide tabs until the user is not registered ([452bbf3](https://github.com/sensorario/scarsoscacco/commit/452bbf3d7371fe782c997b1a5dd4996a5966f3a5))
+* **ui:** huge refactoring of all the interface ([ec5a085](https://github.com/sensorario/scarsoscacco/commit/ec5a0853082ce9d0acbfd5592e1faccbbdd78804))
+
 ## [1.3.0](https://github.com/sensorario/scarsoscacco/compare/v1.2.1...v1.3.0) (2025-06-28)
 
 
